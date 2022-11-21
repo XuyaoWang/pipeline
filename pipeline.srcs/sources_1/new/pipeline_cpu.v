@@ -28,10 +28,18 @@ module pipeline_cpu(  // 多周期cpu
     output [31:0] LO_data,
     
     output [31:0] cpu_5_over_,
+    output [31:0] cpu_5_allow_in_,
     
     output [31:0] inst_,
     output [31:0] inst_addr_,
     output next_fetch_,
+    
+    output [31:0] rs_value_,
+    output [ 4:0] rs_,
+    output [31:0] rt_value_,
+    output [ 4:0] rt_,
+    
+    output [ 31:0] alu_result_,
     
     output [ 63:0] IF_ID_bus_,   // IF->ID级总线
     output [166:0] ID_EXE_bus_,  // ID->EXE级总线
@@ -47,10 +55,17 @@ module pipeline_cpu(  // 多周期cpu
     
     assign cpu_5_over_ =  {12'd0         ,{4{IF_over }},{4{ID_over}},
                           {4{EXE_over}},{4{MEM_over}},{4{WB_over}}};
+    assign cpu_5_allow_in_ = {12'd0         ,{4{IF_allow_in }},{4{ID_allow_in}},
+                          {4{EXE_allow_in}},{4{MEM_allow_in}},{4{WB_allow_in}}};
     
     assign inst_=inst;
     assign inst_addr_=inst_addr;
     assign next_fetch_=next_fetch;
+    
+    assign rs_value_=rs_value;
+    assign rs_=rs;
+    assign rt_value_=rt_value;
+    assign rt_=rt;
     
     assign IF_ID_bus_=IF_ID_bus; 
     assign ID_EXE_bus_=ID_EXE_bus;
@@ -213,7 +228,7 @@ module pipeline_cpu(  // 多周期cpu
 
 //--------------------------{其他交互信号}begin--------------------------//
     //跳转总线
-    wire [ 32:0] jbr_bus;    
+    wire [ 32:0] jbr_bus;   
 
     //IF与inst_rom交互
     wire [31:0] inst_addr;
@@ -300,6 +315,8 @@ module pipeline_cpu(  // 多周期cpu
         //5级流水新增
         .clk         (clk         ),  // I, 1
         .EXE_wdest   (EXE_wdest   ),  // O, 5
+        
+        .alu_result_(alu_result_),
         
         //展示PC
         .EXE_pc      (EXE_pc      )   // O, 32

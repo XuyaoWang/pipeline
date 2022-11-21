@@ -133,11 +133,17 @@ module mem(                          // 访存级
     //故mem在进行load操作时有需要两拍时间才能取到数据
     //而对其他操作，则只需要一拍时间
     reg MEM_valid_r;
+    reg counter;
     always @(posedge clk)
     begin
         if (MEM_allow_in)
         begin
             MEM_valid_r <= 1'b0;
+            counter <= 0;
+        end 
+        else if(counter == 1'b0)
+        begin
+            counter <= 1'b1;
         end
         else
         begin

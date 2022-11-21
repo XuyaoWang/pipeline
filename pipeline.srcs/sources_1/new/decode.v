@@ -6,6 +6,8 @@
 //   > 日期  : 2016-04-14
 //*************************************************************************
 module decode(                      // 译码级
+    input              clk,       // 时钟
+    input              resetn,    // 复位信号，低电平有效
     input              ID_valid,    // 译码级有效信号
     input      [ 63:0] IF_ID_bus_r, // IF->ID总线
     input      [ 31:0] rs_value,    // 第一源操作数值
@@ -18,7 +20,7 @@ module decode(                      // 译码级
     output     [166:0] ID_EXE_bus,  // ID->EXE总线
     
     //5级流水新增
-     input              IF_over,     //对于分支指令，需要该信号
+    input              IF_over,     //对于分支指令，需要该信号
     input      [  4:0] EXE_wdest,   // EXE级要写回寄存器堆的目标地址号
     input      [  4:0] MEM_wdest,   // MEM级要写回寄存器堆的目标地址号
     input      [  4:0] WB_wdest,    // WB级要写回寄存器堆的目标地址号
@@ -225,7 +227,6 @@ module decode(                      // 译码级
     assign br_target[31:2] = bd_pc[31:2] + {{14{offset[15]}}, offset};  
     assign br_target[1:0]  = bd_pc[1:0];
     
-    //jump and branch指令
     wire jbr_taken;
     wire [31:0] jbr_target;
     assign jbr_taken = (j_taken | br_taken) & ID_over; 
@@ -318,13 +319,13 @@ module decode(                      // 译码级
                       inst_wdest_31 ? 5'd31 :  //以便能准确判断数据相关
                       inst_wdest_rd ? rd : 5'd0;
     assign store_data = rt_value;
-    assign ID_EXE_bus = {multiply,mthi,mtlo,                   //EXE需用的信息,新增
-                         alu_control,alu_operand1,alu_operand2,//EXE需用的信息
-                         mem_control,store_data,               //MEM需用的信号
-                         mfhi,mflo,                            //WB需用的信号,新增
-                         mtc0,mfc0,cp0r_addr,syscall,eret,     //WB需用的信号,新增
-                         rf_wen, rf_wdest,                     //WB需用的信号
-                         pc};                                  //PC值
+    assign ID_EXE_bus = {multiply,mthi,mtlo,                   //EXE需用的信息,新增   [166:164]
+                         alu_control,alu_operand1,alu_operand2,//EXE需用的信息        [163:88]
+                         mem_control,store_data,               //MEM需用的信号        [87:52]
+                         mfhi,mflo,                            //WB需用的信号,新增    [51:50]
+                         mtc0,mfc0,cp0r_addr,syscall,eret,     //WB需用的信号,新增    [49:38]
+                         rf_wen, rf_wdest,                     //WB需用的信号         [37:32]
+                         pc};                                  //PC值                 [31:0]
 //-----{ID->EXE总线}end
 
 //-----{展示ID模块的PC值}begin

@@ -42,10 +42,18 @@ module tb;
     wire [31:0] cpu_5_valid;
     
     wire [31:0] cpu_5_over;
+    wire [31:0] cpu_5_allow_in;
     
     wire [31:0] inst;
     wire [31:0] inst_addr;
     wire next_fetch;
+    
+    wire [31:0] rs_value;
+    wire [ 4:0] rs;
+    wire [31:0] rt_value;
+    wire [ 4:0] rt;
+    
+    wire [ 31:0] alu_result;
     
     wire [ 63:0] IF_ID_bus;   // IF->ID¼¶×ÜÏß
     wire [ 63:0] IF_ID_bus_r;
@@ -77,10 +85,18 @@ module tb;
         .cpu_5_valid(cpu_5_valid),
         
         .cpu_5_over_(cpu_5_over),
+        .cpu_5_allow_in_(cpu_5_allow_in),
         
         .inst_(inst),
         .inst_addr_(inst_addr),
         .next_fetch_(next_fetch),
+        
+        .rs_value_(rs_value),
+        .rs_(rs),
+        .rt_value_(rt_value),
+        .rt_(rt),
+        
+        .alu_result_(alu_result),
         
         .IF_ID_bus_(IF_ID_bus),
         .IF_ID_bus_r_(IF_ID_bus_r),

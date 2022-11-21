@@ -29,7 +29,7 @@ module fetch(                    // 取指级
     wire [31:0] next_pc;
     wire [31:0] seq_pc;
     reg  [31:0] pc;
-    reg  [31:0] prev_pc;
+    reg  [31:0] predict_pc;
     
     //跳转pc
     wire        jbr_taken;
@@ -57,6 +57,7 @@ module fetch(                    // 取指级
         end
         else if (next_fetch)
         begin
+            predict_pc <= next_pc;
             pc <= next_pc;    // 不复位，取新指令
         end
     end
@@ -88,7 +89,6 @@ module fetch(                    // 取指级
         else 
         begin
             IF_over <= IF_valid;
-            
         end
     end
     //如果指令rom为异步读的，则IF_valid即是IF_over信号，
@@ -96,7 +96,6 @@ module fetch(                    // 取指级
 //-----{IF执行完成}end
 
 //-----{IF->ID总线}begin
-//    assign IF_ID_bus={prev_pc, inst};  
     assign IF_ID_bus={pc, inst};  // 取指级有效时，锁存PC和指令
 //-----{IF->ID总线}end
 

@@ -11,13 +11,18 @@ module exe(                         // 执行级
     output             EXE_over,    // EXE模块执行完成
     output     [153:0] EXE_MEM_bus, // EXE->MEM总线
     
-     //5级流水新增
-     input             clk,       // 时钟
-     output     [  4:0] EXE_wdest,   // EXE级要写回寄存器堆的目标地址号
+    //5级流水新增
+    input             clk,       // 时钟
+    output     [  4:0] EXE_wdest,   // EXE级要写回寄存器堆的目标地址号
  
+    output     [ 31:0] alu_result_,
     //展示PC
     output     [ 31:0] EXE_pc
 );
+
+    assign alu_result_=EXE_MEM_bus[117:86];
+
+
 //-----{ID->EXE总线}begin
     //EXE需要用到的信息
     wire multiply;            //乘法
@@ -116,14 +121,14 @@ module exe(                         // 执行级
     assign hi_write   = multiply | mthi;
     assign lo_write   = multiply | mtlo;
     
-    assign EXE_MEM_bus = {mem_control,store_data,          //load/store信息和store数据
-                          exe_result,                      //exe运算结果
-                          lo_result,                       //乘法低32位结果，新增
-                          hi_write,lo_write,               //HI/LO写使能，新增
-                          mfhi,mflo,                       //WB需用的信号,新增
-                          mtc0,mfc0,cp0r_addr,syscall,eret,//WB需用的信号,新增
-                          rf_wen,rf_wdest,                 //WB需用的信号
-                          pc};                             //PC
+    assign EXE_MEM_bus = {mem_control,store_data,          //load/store信息和store数据   [153:118
+                          exe_result,                      //exe运算结果                 [117:86]
+                          lo_result,                       //乘法低32位结果，新增        [85:54]
+                          hi_write,lo_write,               //HI/LO写使能，新增           [53:52]
+                          mfhi,mflo,                       //WB需用的信号,新增           [51:50]
+                          mtc0,mfc0,cp0r_addr,syscall,eret,//WB需用的信号,新增           [49:38]
+                          rf_wen,rf_wdest,                 //WB需用的信号                [37:32]
+                          pc};                             //PC                          [31:0]
 //-----{EXE->MEM总线}end
 
 //-----{展示EXE模块的PC值}begin
