@@ -2,8 +2,8 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Mon Nov 21 14:25:12 2022
-# Process ID: 87716
+# Start of session at: Tue Nov 22 19:46:51 2022
+# Process ID: 141352
 # Current directory: E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1
 # Command line: vivado.exe -log pipeline_cpu_display.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source pipeline_cpu_display.tcl
 # Log file: E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/pipeline_cpu_display.vds
@@ -15,9 +15,9 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 109120 
+INFO: Helper process launched with PID 135216 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 394.781 ; gain = 102.570
+Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 394.398 ; gain = 101.957
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'pipeline_cpu_display' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu_display.v:8]
 INFO: [Synth 8-6157] synthesizing module 'BUFGCE' [E:/Xilinx/Vivado/2018.3/scripts/rt/data/unisim_comp.v:619]
@@ -27,11 +27,11 @@ INFO: [Synth 8-6157] synthesizing module 'BUFGCE' [E:/Xilinx/Vivado/2018.3/scrip
 INFO: [Synth 8-6155] done synthesizing module 'BUFGCE' (1#1) [E:/Xilinx/Vivado/2018.3/scripts/rt/data/unisim_comp.v:619]
 INFO: [Synth 8-6157] synthesizing module 'pipeline_cpu' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu.v:9]
 INFO: [Synth 8-6157] synthesizing module 'fetch' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/fetch.v:9]
-WARNING: [Synth 8-6014] Unused sequential element predict_pc_reg was removed.  [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/fetch.v:60]
+WARNING: [Synth 8-6014] Unused sequential element predict_pc_reg was removed.  [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/fetch.v:73]
 INFO: [Synth 8-6155] done synthesizing module 'fetch' (2#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/fetch.v:9]
 INFO: [Synth 8-6157] synthesizing module 'decode' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/decode.v:8]
 INFO: [Synth 8-6155] done synthesizing module 'decode' (3#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/decode.v:8]
-WARNING: [Synth 8-350] instance 'ID_module' of module 'decode' requires 16 connections, but only 14 given [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu.v:287]
+WARNING: [Synth 8-350] instance 'ID_module' of module 'decode' requires 16 connections, but only 14 given [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu.v:293]
 INFO: [Synth 8-6157] synthesizing module 'exe' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/exe.v:8]
 INFO: [Synth 8-6157] synthesizing module 'alu' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/alu.v:8]
 INFO: [Synth 8-6157] synthesizing module 'adder' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/adder.v:8]
@@ -46,17 +46,17 @@ INFO: [Synth 8-226] default block is never used [E:/NKU/lesson/class file/junior
 INFO: [Synth 8-6155] done synthesizing module 'mem' (8#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/mem.v:8]
 INFO: [Synth 8-6157] synthesizing module 'wb' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/wb.v:10]
 INFO: [Synth 8-6155] done synthesizing module 'wb' (9#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/wb.v:10]
-INFO: [Synth 8-6157] synthesizing module 'inst_rom' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/inst_rom_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'inst_rom' (10#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/inst_rom_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'inst_rom' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/inst_rom_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'inst_rom' (10#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/inst_rom_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'regfile' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/regfile.v:8]
 WARNING: [Synth 8-6014] Unused sequential element rf_reg[0] was removed.  [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/regfile.v:31]
 INFO: [Synth 8-6155] done synthesizing module 'regfile' (11#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/regfile.v:8]
-INFO: [Synth 8-6157] synthesizing module 'data_ram' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/data_ram_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'data_ram' (12#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/data_ram_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'data_ram' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/data_ram_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'data_ram' (12#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/data_ram_stub.v:6]
 INFO: [Synth 8-6155] done synthesizing module 'pipeline_cpu' (13#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu.v:9]
-WARNING: [Synth 8-350] instance 'cpu' of module 'pipeline_cpu' requires 33 connections, but only 15 given [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu_display.v:68]
-INFO: [Synth 8-6157] synthesizing module 'lcd_module' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/lcd_module_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'lcd_module' (14#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-87716-yao-lenovo/realtime/lcd_module_stub.v:6]
+WARNING: [Synth 8-350] instance 'cpu' of module 'pipeline_cpu' requires 34 connections, but only 15 given [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu_display.v:68]
+INFO: [Synth 8-6157] synthesizing module 'lcd_module' [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/lcd_module_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'lcd_module' (14#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/.Xil/Vivado-141352-yao-lenovo/realtime/lcd_module_stub.v:6]
 INFO: [Synth 8-6155] done synthesizing module 'pipeline_cpu_display' (15#1) [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu_display.v:8]
 WARNING: [Synth 8-3331] design decode has unconnected port clk
 WARNING: [Synth 8-3331] design decode has unconnected port resetn
@@ -85,7 +85,7 @@ WARNING: [Synth 8-3331] design pipeline_cpu has unconnected port mem_addr[10]
 WARNING: [Synth 8-3331] design pipeline_cpu has unconnected port mem_addr[1]
 WARNING: [Synth 8-3331] design pipeline_cpu has unconnected port mem_addr[0]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.262 ; gain = 159.051
+Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.051 ; gain = 158.609
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -98,10 +98,10 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.262 ; gain = 159.051
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.051 ; gain = 158.609
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.262 ; gain = 159.051
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:03 . Memory (MB): peak = 451.051 ; gain = 158.609
 ---------------------------------------------------------------------------------
 INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
@@ -118,25 +118,25 @@ Parsing XDC File [E:/NKU/lesson/class file/junior1/architecture/architecture exp
 Finished Parsing XDC File [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/constrs_1/new/pipeline_cpu.xdc]
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/constrs_1/new/pipeline_cpu.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/pipeline_cpu_display_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/pipeline_cpu_display_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 845.465 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 846.512 ; gain = 0.000
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 845.465 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 846.512 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 1 instances were transformed.
   BUFGCE => BUFGCTRL: 1 instances
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 845.465 ; gain = 0.000
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 845.465 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 846.512 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.007 . Memory (MB): peak = 846.512 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a200tfbg676-2
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -144,7 +144,7 @@ Start Applying 'set_property' XDC Constraints
 Applied set_property DONT_TOUCH = true for cpu/data_ram_module. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for cpu/inst_rom_module. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "rf_reg[31]" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "rf_reg[30]" won't be mapped to RAM because it is too sparse
@@ -180,7 +180,7 @@ INFO: [Synth 8-5546] ROM "rf_reg[1]" won't be mapped to RAM because it is too sp
 INFO: [Synth 8-5546] ROM "display_valid" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "display_name" won't be mapped to RAM because it is too sparse
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:12 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:12 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -389,7 +389,7 @@ INFO: [Synth 8-3886] merging instance 'display_name_reg[31]' (FDR) to 'display_n
 INFO: [Synth 8-3886] merging instance 'display_name_reg[33]' (FDS) to 'display_name_reg[36]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\display_name_reg[39] )
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:21 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:08 ; elapsed = 00:00:20 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -401,13 +401,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:27 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:26 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:27 . Memory (MB): peak = 845.465 ; gain = 553.254
+Finished Timing Optimization : Time (s): cpu = 00:00:11 ; elapsed = 00:00:27 . Memory (MB): peak = 846.512 ; gain = 554.070
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -419,7 +419,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Technology Mapping : Time (s): cpu = 00:00:12 ; elapsed = 00:00:28 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -444,7 +444,7 @@ Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-5410] Found another clock driver cpu_clk_cg:O [E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/new/pipeline_cpu_display.v:50]
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished IO Insertion : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -457,7 +457,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -469,25 +469,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -520,8 +520,8 @@ Report Cell Usage:
 |12    |LUT6       |  1428|
 |13    |MUXF7      |   300|
 |14    |MUXF8      |    32|
-|15    |FDRE       |  1874|
-|16    |FDSE       |    14|
+|15    |FDRE       |  1877|
+|16    |FDSE       |    11|
 |17    |IBUF       |     3|
 |18    |OBUF       |     8|
 +------+-----------+------+
@@ -540,17 +540,17 @@ Report Instance Areas:
 |8     |    rf_module         |regfile      |  2416|
 +------+----------------------+-------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 27 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:09 ; elapsed = 00:00:24 . Memory (MB): peak = 906.734 ; gain = 220.320
-Synthesis Optimization Complete : Time (s): cpu = 00:00:12 ; elapsed = 00:00:30 . Memory (MB): peak = 906.734 ; gain = 614.523
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:08 ; elapsed = 00:00:23 . Memory (MB): peak = 911.824 ; gain = 223.922
+Synthesis Optimization Complete : Time (s): cpu = 00:00:12 ; elapsed = 00:00:29 . Memory (MB): peak = 911.824 ; gain = 619.383
 INFO: [Project 1-571] Translating synthesized netlist
 INFO: [Netlist 29-17] Analyzing 417 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 906.734 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 911.824 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 1 instances were transformed.
   BUFGCE => BUFGCTRL: 1 instances
@@ -558,10 +558,10 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 INFO: [Common 17-83] Releasing license: Synthesis
 98 Infos, 57 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:13 ; elapsed = 00:00:32 . Memory (MB): peak = 906.734 ; gain = 626.035
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 906.734 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:13 ; elapsed = 00:00:32 . Memory (MB): peak = 911.824 ; gain = 630.883
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 911.824 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint 'E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/synth_1/pipeline_cpu_display.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file pipeline_cpu_display_utilization_synth.rpt -pb pipeline_cpu_display_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Mon Nov 21 14:25:48 2022...
+INFO: [Common 17-206] Exiting Vivado at Tue Nov 22 19:47:28 2022...

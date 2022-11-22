@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Mon Nov 21 14:27:31 2022
+| Date             : Tue Nov 22 19:49:12 2022
 | Host             : yao-lenovo running 64-bit major release  (build 9200)
 | Command          : report_power -file pipeline_cpu_display_power_routed.rpt -pb pipeline_cpu_display_power_summary_routed.pb -rpx pipeline_cpu_display_power_routed.rpx
 | Design           : pipeline_cpu_display
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+----------------------------------+
-| Total On-Chip Power (W)  | 61.581 (Junction temp exceeded!) |
+| Total On-Chip Power (W)  | 61.282 (Junction temp exceeded!) |
 | Design Power Budget (W)  | Unspecified*                     |
 | Power Budget Margin (W)  | NA                               |
-| Dynamic (W)              | 59.898                           |
+| Dynamic (W)              | 59.598                           |
 | Device Static (W)        | 1.683                            |
 | Effective TJA (C/W)      | 1.9                              |
 | Max Ambient (C)          | 0.0                              |
@@ -52,18 +52,18 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Slice Logic    |     6.354 |     5713 |       --- |             --- |
-|   LUT as Logic |     5.630 |     2809 |    133800 |            2.10 |
+| Slice Logic    |     6.298 |     5713 |       --- |             --- |
+|   LUT as Logic |     5.574 |     2808 |    133800 |            2.10 |
 |   CARRY4       |     0.409 |       90 |     33450 |            0.27 |
 |   Register     |     0.209 |     2170 |    267600 |            0.81 |
 |   BUFG         |     0.058 |        3 |        32 |            9.38 |
-|   F7/F8 Muxes  |     0.048 |      340 |    133800 |            0.25 |
+|   F7/F8 Muxes  |     0.047 |      340 |    133800 |            0.25 |
 |   Others       |     0.000 |       34 |       --- |             --- |
-| Signals        |     8.800 |     4556 |       --- |             --- |
+| Signals        |     8.556 |     4559 |       --- |             --- |
 | Block RAM      |     0.412 |      2.5 |       365 |            0.68 |
 | I/O            |    44.331 |       29 |       400 |            7.25 |
 | Static Power   |     1.683 |          |           |                 |
-| Total          |    61.581 |          |           |                 |
+| Total          |    61.282 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -73,7 +73,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |    16.753 |      15.542 |      1.211 |
+| Vccint    |       1.000 |    16.454 |      15.242 |      1.211 |
 | Vccaux    |       1.800 |     1.830 |       1.624 |      0.206 |
 | Vcco33    |       3.300 |    12.550 |      12.545 |      0.005 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -140,24 +140,24 @@ Table of Contents
 +-----------------------+-----------+
 | Name                  | Power (W) |
 +-----------------------+-----------+
-| pipeline_cpu_display  |    59.898 |
-|   cpu                 |    12.746 |
-|     EXE_module        |     1.272 |
-|       multiply_module |     1.272 |
-|     IF_module         |     0.942 |
-|     MEM_module        |     0.040 |
-|     WB_module         |     0.772 |
-|     data_ram_module   |     0.517 |
-|       U0              |     0.517 |
-|     inst_rom_module   |     0.207 |
-|       U0              |     0.207 |
-|     rf_module         |     1.639 |
-|   lcd_module          |    46.911 |
-|     lcd_draw_module   |     0.594 |
-|     lcd_init_module   |     0.646 |
-|     lcd_rom_module    |     0.414 |
-|       U0              |     0.414 |
-|     touch_module      |     0.289 |
+| pipeline_cpu_display  |    59.598 |
+|   cpu                 |    12.467 |
+|     EXE_module        |     1.201 |
+|       multiply_module |     1.201 |
+|     IF_module         |     0.883 |
+|     MEM_module        |     0.035 |
+|     WB_module         |     0.781 |
+|     data_ram_module   |     0.481 |
+|       U0              |     0.481 |
+|     inst_rom_module   |     0.248 |
+|       U0              |     0.248 |
+|     rf_module         |     1.630 |
+|   lcd_module          |    46.894 |
+|     lcd_draw_module   |     0.581 |
+|     lcd_init_module   |     0.647 |
+|     lcd_rom_module    |     0.437 |
+|       U0              |     0.437 |
+|     touch_module      |     0.267 |
 |       sda_io          |     0.036 |
 +-----------------------+-----------+
 

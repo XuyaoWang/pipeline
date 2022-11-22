@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Mon Nov 21 14:27:32 2022
+| Date         : Tue Nov 22 19:49:13 2022
 | Host         : yao-lenovo running 64-bit major release  (build 9200)
 | Command      : report_timing_summary -max_paths 10 -file pipeline_cpu_display_timing_summary_routed.rpt -pb pipeline_cpu_display_timing_summary_routed.pb -rpx pipeline_cpu_display_timing_summary_routed.rpx -warn_on_violation
 | Design       : pipeline_cpu_display

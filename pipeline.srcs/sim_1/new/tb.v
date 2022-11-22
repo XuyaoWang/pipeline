@@ -55,6 +55,8 @@ module tb;
     
     wire [ 31:0] alu_result;
     
+    wire [ 32:0] jbr_bus;
+    
     wire [ 63:0] IF_ID_bus;   // IF->ID¼¶×ÜÏß
     wire [ 63:0] IF_ID_bus_r;
     
@@ -98,6 +100,8 @@ module tb;
         
         .alu_result_(alu_result),
         
+        .jbr_bus_(jbr_bus),
+        
         .IF_ID_bus_(IF_ID_bus),
         .IF_ID_bus_r_(IF_ID_bus_r),
         .ID_EXE_bus_(ID_EXE_bus),
@@ -112,8 +116,8 @@ module tb;
         // Initialize Inputs
         clk = 0;
         resetn = 0;
-        rf_addr = 0;
-        mem_addr = 0;
+        rf_addr = 2;
+        mem_addr = 4;
 
         // Wait 100 ns for global reset to finish
         #100;

@@ -32,7 +32,7 @@ set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property ip_output_repo {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.cache/ip} [current_project]
 set_property ip_cache_permissions {read write} [current_project]
-read_ip -quiet {{e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.xci}}
+read_ip -quiet {{E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.xci}}
 set_property used_in_implementation false [get_files -all {{e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_ooc.xdc}}]
 
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -88,32 +88,32 @@ write_checkpoint -force -noxdef inst_rom.dcp
 create_report "inst_rom_synth_1_synth_report_utilization_0" "report_utilization -file inst_rom_utilization_synth.rpt -pb inst_rom_utilization_synth.pb"
 
 if { [catch {
-  file copy -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom.dcp} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.dcp}
+  file copy -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom.dcp} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.dcp}
 } _RESULT ] } { 
   send_msg_id runtcl-3 error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  write_verilog -force -mode synth_stub {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}
+  write_verilog -force -mode synth_stub {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode synth_stub {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}
+  write_vhdl -force -mode synth_stub {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_verilog -force -mode funcsim {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.v}
+  write_verilog -force -mode funcsim {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode funcsim {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.vhdl}
+  write_vhdl -force -mode funcsim {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -123,32 +123,32 @@ if { [catch {
 
 
 if { [catch {
-  file copy -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom.dcp} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.dcp}
+  file copy -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom.dcp} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom.dcp}
 } _RESULT ] } { 
   send_msg_id runtcl-3 error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_stub.v} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}
+  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_stub.v} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_stub.vhdl} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}
+  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_stub.vhdl} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_sim_netlist.v} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.v}
+  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_sim_netlist.v} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_sim_netlist.vhdl} {e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.vhdl}
+  file rename -force {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.runs/inst_rom_synth_1/inst_rom_sim_netlist.vhdl} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_sim_netlist.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -157,13 +157,13 @@ if { [catch {
 
 if {[file isdir {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}]} {
   catch { 
-    file copy -force {{e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}
+    file copy -force {{E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.v}} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}
   }
 }
 
 if {[file isdir {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}]} {
   catch { 
-    file copy -force {{e:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}
+    file copy -force {{E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.srcs/sources_1/ip/inst_rom/inst_rom_stub.vhdl}} {E:/NKU/lesson/class file/junior1/architecture/architecture experiment/pipeline/pipeline.ip_user_files/ip/inst_rom}
   }
 }
 file delete __synthesis_is_running__

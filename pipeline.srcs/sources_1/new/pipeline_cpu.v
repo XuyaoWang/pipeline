@@ -41,6 +41,8 @@ module pipeline_cpu(  // 多周期cpu
     
     output [ 31:0] alu_result_,
     
+    output [ 32:0] jbr_bus_,
+    
     output [ 63:0] IF_ID_bus_,   // IF->ID级总线
     output [166:0] ID_EXE_bus_,  // ID->EXE级总线
     output [153:0] EXE_MEM_bus_, // EXE->MEM级总线
@@ -52,6 +54,8 @@ module pipeline_cpu(  // 多周期cpu
     output [153:0] EXE_MEM_bus_r_,
     output [117:0] MEM_WB_bus_r_
     );
+    
+    assign jbr_bus_=jbr_bus;
     
     assign cpu_5_over_ =  {12'd0         ,{4{IF_over }},{4{ID_over}},
                           {4{EXE_over}},{4{MEM_over}},{4{WB_over}}};
@@ -105,6 +109,7 @@ module pipeline_cpu(  // 多周期cpu
     //各级允许进入信号:本级无效，或本级执行完成且下级允许进入
     assign IF_allow_in  = (IF_over & ID_allow_in) | cancel;
     assign ID_allow_in  = ~ID_valid  | (ID_over  & EXE_allow_in);
+//    assign ID_allow_in  = (~ID_valid  | (ID_over  & EXE_allow_in))&~predict_signal;
     assign EXE_allow_in = ~EXE_valid | (EXE_over & MEM_allow_in);
     assign MEM_allow_in = ~MEM_valid | (MEM_over & WB_allow_in );
     assign WB_allow_in  = ~WB_valid  | WB_over;
@@ -229,6 +234,7 @@ module pipeline_cpu(  // 多周期cpu
 //--------------------------{其他交互信号}begin--------------------------//
     //跳转总线
     wire [ 32:0] jbr_bus;   
+    wire predict_signal; 
 
     //IF与inst_rom交互
     wire [31:0] inst_addr;

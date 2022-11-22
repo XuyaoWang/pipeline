@@ -5,7 +5,7 @@
 //   > 作者  : LOONGSON
 //   > 日期  : 2016-04-14
 //*************************************************************************
-`define STARTADDR 32'H00000034   // 程序起始地址为34H
+`define STARTADDR 32'H00000000   // 程序起始地址为34H
 module fetch(                    // 取指级
     input             clk,       // 时钟
     input             resetn,    // 复位信号，低电平有效
@@ -23,6 +23,8 @@ module fetch(                    // 取指级
     //展示PC和取出的指令
     output     [31:0] IF_pc,
     output     [31:0] IF_inst
+    
+//    input      predict_signal      // 预测错误信号
 );
 
 //-----{程序计数器PC}begin
@@ -55,6 +57,17 @@ module fetch(                    // 取指级
         begin
             pc <= `STARTADDR; // 复位，取程序起始地址
         end
+//        else if (predict_signal)
+//        begin
+//            if (next_pc == seq_pc)
+//            begin
+//                pc <= jbr_target;
+//            end
+//            else if (next_pc == jbr_target)
+//            begin
+//                pc <= seq_pc;
+//            end
+//        end
         else if (next_fetch)
         begin
             predict_pc <= next_pc;
@@ -96,6 +109,7 @@ module fetch(                    // 取指级
 //-----{IF执行完成}end
 
 //-----{IF->ID总线}begin
+//    assign IF_ID_bus={pc, inst};  
     assign IF_ID_bus={pc, inst};  // 取指级有效时，锁存PC和指令
 //-----{IF->ID总线}end
 
@@ -103,4 +117,9 @@ module fetch(                    // 取指级
     assign IF_pc   = pc;
     assign IF_inst = inst;
 //-----{展示IF模块的PC值和指令}end
+
+//-----{分支预测错误处理}begin
+    // 出现错误信号，只要确认pc改变即可解除
+//    assign predict_signal = predict_signal==1 && predict_pc!=pc ? 0:1;
+//-----{分支预测错误处理}end
 endmodule
