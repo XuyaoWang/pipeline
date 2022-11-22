@@ -52,10 +52,15 @@ module pipeline_cpu(  // 多周期cpu
     output [ 63:0] IF_ID_bus_r_,
     output [166:0] ID_EXE_bus_r_,
     output [153:0] EXE_MEM_bus_r_,
-    output [117:0] MEM_WB_bus_r_
+    output [117:0] MEM_WB_bus_r_,
+    
+    output  [1:0] state ,
+    output  [31:0] predict,
+    output  [31:0] br
     );
     
     assign jbr_bus_=jbr_bus;
+    assign predict = {16'b0,{4{predict_error}},{4{predict_valid}},{4{predict_taken}},{4{predict_over}}};
     
     assign cpu_5_over_ =  {12'd0         ,{4{IF_over }},{4{ID_over}},
                           {4{EXE_over}},{4{MEM_over}},{4{WB_over}}};
@@ -108,8 +113,8 @@ module pipeline_cpu(  // 多周期cpu
     
     //各级允许进入信号:本级无效，或本级执行完成且下级允许进入
     assign IF_allow_in  = (IF_over & ID_allow_in) | cancel;
-    assign ID_allow_in  = ~ID_valid  | (ID_over  & EXE_allow_in);
-//    assign ID_allow_in  = (~ID_valid  | (ID_over  & EXE_allow_in))&~predict_signal;
+//    assign ID_allow_in  = ~ID_valid  | (ID_over  & EXE_allow_in);
+    assign ID_allow_in  = (~ID_valid  | (ID_over  & EXE_allow_in))&~predict_error;
     assign EXE_allow_in = ~EXE_valid | (EXE_over & MEM_allow_in);
     assign MEM_allow_in = ~MEM_valid | (MEM_over & WB_allow_in );
     assign WB_allow_in  = ~WB_valid  | WB_over;
@@ -233,8 +238,13 @@ module pipeline_cpu(  // 多周期cpu
 
 //--------------------------{其他交互信号}begin--------------------------//
     //跳转总线
-    wire [ 32:0] jbr_bus;   
-    wire predict_signal; 
+    wire [ 32:0] jbr_bus;  
+    
+    // 分支预测信号 
+    wire predict_error; 
+    wire predict_valid;
+    wire predict_taken;
+    wire predict_over;
 
     //IF与inst_rom交互
     wire [31:0] inst_addr;
@@ -287,10 +297,14 @@ module pipeline_cpu(  // 多周期cpu
         
         //展示PC和取出的指令
         .IF_pc     (IF_pc     ),  // O, 32
-        .IF_inst   (IF_inst   )   // O, 32
+        .IF_inst   (IF_inst   ),   // O, 32
+        
+        .predict_error(predict_error)
     );
 
     decode ID_module(               // 译码级
+        .clk        (clk       ),  // I, 1
+        .resetn     (resetn    ),  // I, 1
         .ID_valid   (ID_valid   ),  // I, 1
         .IF_ID_bus_r(IF_ID_bus_r),  // I, 64
         .rs_value   (rs_value   ),  // I, 32
@@ -309,7 +323,14 @@ module pipeline_cpu(  // 多周期cpu
         .WB_wdest    (WB_wdest    ),// I, 5
         
         //展示PC
-        .ID_pc       (ID_pc       ) // O, 32
+        .ID_pc       (ID_pc       ), // O, 32
+        
+        .predict_error(predict_error),
+        .predict_valid_(predict_valid),
+        .predict_taken_(predict_taken),
+        .predict_over_(predict_over),
+        .state_(state),
+        .br(br)
     ); 
 
     exe EXE_module(                   // 执行级

@@ -26,10 +26,20 @@ module decode(                      // 译码级
     input      [  4:0] WB_wdest,    // WB级要写回寄存器堆的目标地址号
     
     //展示PC
-    output     [ 31:0] ID_pc
+    output     [ 31:0] ID_pc,
     
-//    output      predict_signal      // 预测错误信号
+    output      [1:0] state_,
+    output      predict_error,      // 预测错误信号
+    output      [31:0] br,
+    output      predict_valid_,
+    output      predict_taken_,
+    output      predict_over_
 );
+
+    assign state_ = state;
+    assign br= {20'b0,{4{predict_valid}},{4{br_taken}},4'b0};
+    assign {predict_valid_,predict_taken_,predict_over_}={predict_valid,predict_taken,predict_over};
+
 //-----{IF->ID总线}begin
     wire [31:0] pc;
     wire [31:0] inst;
@@ -230,35 +240,40 @@ module decode(                      // 译码级
     assign br_target[1:0]  = bd_pc[1:0];
     
     //-------------------{分支预测}---------------begin
-//    wire predict_valid;
-//    assign predict_valid = inst_BEQ 
-//                         | inst_BNE 
-//                         | inst_BGEZ
-//                         | inst_BGTZ
-//                         | inst_BLEZ
-//                         | inst_BLTZ;
-//    reg predict_over;
-//    reg [1:0] state ;
-//    always @(posedge clk)
-//    begin
-//       if(!resetn)
-//       begin
-//            state <= 2'b00;
-//            predict_over <= 1'b1;
-//       end 
-//       else if(predict_valid && !predict_over)    
-//       begin
-//           case(state)
-//                2'b00 : state <= br_taken?2'b00:2'b01;
-//                2'b01 : state <= br_taken?2'b00:2'b10;
-//                2'b10 : state <= br_taken?2'b11:2'b10;
-//                2'b11 : state <= br_taken?2'b00:2'b10;
-//           endcase                                                                                                                                                                                                                                                                                                  
-//           predict_over <= 1'b1; 
-//       end
-       
-//    end
-    
+    wire predict_valid;
+    wire predict_taken;
+    assign predict_valid = inst_BEQ 
+                         | inst_BNE 
+                         | inst_BGEZ
+                         | inst_BGTZ
+                         | inst_BLEZ
+                         | inst_BLTZ;
+    assign predict_taken = predict_valid ? 0: state==2'b00||state==2'b01;
+    assign predict_error = resetn ? 0 : predict_valid ? br_taken == predict_taken : 0 ;        
+    reg predict_over;
+    reg [1:0] state ;
+    always @(posedge clk)
+    begin
+       if(!resetn)
+       begin
+            state <= 2'b10;
+            predict_over <= 1'b0;
+       end 
+       else if(!predict_valid)
+       begin
+            predict_over <= 1'b0; 
+       end
+       else if(predict_valid && !predict_over)    
+       begin
+           case(state)
+                2'b00 : state <= br_taken?2'b00:2'b01;
+                2'b01 : state <= br_taken?2'b00:2'b10;
+                2'b10 : state <= br_taken?2'b11:2'b10;
+                2'b11 : state <= br_taken?2'b00:2'b10;
+           endcase                                                                                                                                                                                                                                                                                                  
+           predict_over <= 1'b1; 
+       end
+    end
     
     //-------------------{分支预测}---------------end
     
@@ -269,7 +284,8 @@ module decode(                      // 译码级
     //jump and branch指令
     wire jbr_taken;
     wire [31:0] jbr_target;
-    assign jbr_taken = (j_taken | br_taken) & ID_over; 
+//    assign jbr_taken = (j_taken | br_taken) & ID_over;
+    assign jbr_taken = (j_taken | predict_taken) & ID_over;  
     assign jbr_target = j_taken ? j_target : br_target;
     
     //ID到IF的跳转总线
