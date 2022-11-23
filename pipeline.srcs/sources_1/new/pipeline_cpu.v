@@ -243,7 +243,7 @@ module pipeline_cpu(  // 多周期cpu
     
     // 分支预测信号 
     wire predict_error; 
-    wire predict_correct;
+    reg predict_correct;
     wire predict_valid;
     wire predict_taken;
     wire predict_update_state;

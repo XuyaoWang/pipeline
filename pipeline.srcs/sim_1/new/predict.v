@@ -82,7 +82,7 @@ module predict;
         // Initialize Inputs
         clk = 0;
         resetn = 0;
-        rf_addr = 1;
+        rf_addr = 2;
         #100;
       resetn = 1;
     end

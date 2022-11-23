@@ -25,14 +25,13 @@ module fetch(                    // 取指级
     output     [31:0] IF_inst,
     
     input      predict_error,      // 预测错误信号
-    output     predict_correct     // 已修正信号
+    output reg       predict_correct     // 已修正信号
 );
 
 //-----{程序计数器PC}begin
     wire [31:0] next_pc;
     wire [31:0] seq_pc;
     reg  [31:0] pc;
-    reg  [31:0] predict_pc;
     
     //跳转pc
     wire        jbr_taken;
@@ -57,6 +56,11 @@ module fetch(                    // 取指级
         if (!resetn)
         begin
             pc <= `STARTADDR; // 复位，取程序起始地址
+            predict_correct <= 0;
+        end
+        else if(predict_correct)
+        begin
+            predict_correct <= 0;
         end
         else if (predict_error)
         begin
@@ -68,10 +72,10 @@ module fetch(                    // 取指级
             begin
                 pc <= seq_pc;
             end
+            predict_correct <= 1;
         end
         else if (next_fetch)
         begin
-            predict_pc <= next_pc;
             pc <= next_pc;    // 不复位，取新指令
         end
     end
@@ -102,7 +106,7 @@ module fetch(                    // 取指级
         end
         else 
         begin
-            IF_over <= predict_error ? 0 : IF_valid;
+            IF_over <= predict_error ? (predict_correct ? IF_valid : 0) : IF_valid;
         end
     end
     //如果指令rom为异步读的，则IF_valid即是IF_over信号，
