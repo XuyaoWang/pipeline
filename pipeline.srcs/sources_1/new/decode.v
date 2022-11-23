@@ -351,14 +351,15 @@ module decode(                      // “Î¬Îº∂
     wire predict_taken;
     wire predict_update_state;
     
-    assign predict_valid = inst_BEQ 
+    assign predict_valid = !ID_valid ? 0 :
+                           inst_BEQ 
                          | inst_BNE 
                          | inst_BGEZ
                          | inst_BGTZ
                          | inst_BLEZ
                          | inst_BLTZ;
     assign predict_update_state = ID_over? 0: predict_valid? 1:0;
-    assign predict_error = resetn ? 0 : predict_valid ? br_taken == predict_taken : 0 ;
+    assign predict_error = !resetn ? 0 : predict_valid ? br_taken ^ predict_taken : 0;
     bp BP_module(
         .clk(clk),
         .resetn(resetn),        

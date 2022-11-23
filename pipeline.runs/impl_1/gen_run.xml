@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="impl_1" LaunchPart="xc7a200tfbg676-2" LaunchTime="1669117539">
-  <File Type="BITSTR-BMM" Name="pipeline_cpu_display_bd.bmm"/>
   <File Type="ROUTE-PWR" Name="pipeline_cpu_display_power_routed.rpt"/>
   <File Type="PA-TCL" Name="pipeline_cpu_display.tcl"/>
-  <File Type="OPT-DCP" Name="pipeline_cpu_display_opt.dcp"/>
+  <File Type="BITSTR-BMM" Name="pipeline_cpu_display_bd.bmm"/>
   <File Type="ROUTE-PWR-SUM" Name="pipeline_cpu_display_power_summary_routed.pb"/>
   <File Type="REPORTS-TCL" Name="pipeline_cpu_display_reports.tcl"/>
+  <File Type="OPT-DCP" Name="pipeline_cpu_display_opt.dcp"/>
   <File Type="OPT-DRC" Name="pipeline_cpu_display_drc_opted.rpt"/>
   <File Type="OPT-HWDEF" Name="pipeline_cpu_display.hwdef"/>
   <File Type="PWROPT-DCP" Name="pipeline_cpu_display_pwropt.dcp"/>
@@ -25,21 +25,21 @@
   <File Type="ROUTE-BLACKBOX-DCP" Name="pipeline_cpu_display_routed_bb.dcp"/>
   <File Type="ROUTE-DRC" Name="pipeline_cpu_display_drc_routed.rpt"/>
   <File Type="ROUTE-DRC-PB" Name="pipeline_cpu_display_drc_routed.pb"/>
-  <File Type="BITSTR-LTX" Name="pipeline_cpu_display.ltx"/>
   <File Type="ROUTE-DRC-RPX" Name="pipeline_cpu_display_drc_routed.rpx"/>
-  <File Type="BITSTR-MMI" Name="pipeline_cpu_display.mmi"/>
+  <File Type="BITSTR-LTX" Name="pipeline_cpu_display.ltx"/>
   <File Type="ROUTE-METHODOLOGY-DRC" Name="pipeline_cpu_display_methodology_drc_routed.rpt"/>
+  <File Type="BITSTR-MMI" Name="pipeline_cpu_display.mmi"/>
   <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="pipeline_cpu_display_methodology_drc_routed.rpx"/>
-  <File Type="BITSTR-SYSDEF" Name="pipeline_cpu_display.sysdef"/>
   <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="pipeline_cpu_display_methodology_drc_routed.pb"/>
+  <File Type="BITSTR-SYSDEF" Name="pipeline_cpu_display.sysdef"/>
   <File Type="ROUTE-PWR-RPX" Name="pipeline_cpu_display_power_routed.rpx"/>
   <File Type="ROUTE-STATUS" Name="pipeline_cpu_display_route_status.rpt"/>
   <File Type="ROUTE-STATUS-PB" Name="pipeline_cpu_display_route_status.pb"/>
   <File Type="ROUTE-TIMINGSUMMARY" Name="pipeline_cpu_display_timing_summary_routed.rpt"/>
   <File Type="ROUTE-TIMING-PB" Name="pipeline_cpu_display_timing_summary_routed.pb"/>
   <File Type="ROUTE-TIMING-RPX" Name="pipeline_cpu_display_timing_summary_routed.rpx"/>
-  <File Type="RDI-RDI" Name="pipeline_cpu_display.vdi"/>
   <File Type="ROUTE-CLK" Name="pipeline_cpu_display_clock_utilization_routed.rpt"/>
+  <File Type="RDI-RDI" Name="pipeline_cpu_display.vdi"/>
   <File Type="ROUTE-BUS-SKEW" Name="pipeline_cpu_display_bus_skew_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW-PB" Name="pipeline_cpu_display_bus_skew_routed.pb"/>
   <File Type="ROUTE-BUS-SKEW-RPX" Name="pipeline_cpu_display_bus_skew_routed.rpx"/>

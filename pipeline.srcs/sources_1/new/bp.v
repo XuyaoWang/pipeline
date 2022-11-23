@@ -62,7 +62,6 @@ module bp(
        end
     end
     
-    assign predict_error = !resetn ? 0 : predict_valid ? br_taken ^ predict_taken : 0;
     assign predict_taken = predict_valid ? 0: state[index]==2'b00||state[index]==2'b01;
     
     assign state0 = state[0];

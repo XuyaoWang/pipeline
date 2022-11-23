@@ -102,7 +102,7 @@ module fetch(                    // 取指级
         end
         else 
         begin
-            IF_over <= IF_valid;
+            IF_over <= predict_error ? 0 : IF_valid;
         end
     end
     //如果指令rom为异步读的，则IF_valid即是IF_over信号，

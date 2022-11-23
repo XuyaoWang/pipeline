@@ -114,8 +114,8 @@ module pipeline_cpu(  // 多周期cpu
     
     //各级允许进入信号:本级无效，或本级执行完成且下级允许进入
     assign IF_allow_in  = (IF_over & ID_allow_in) | cancel;
-//    assign ID_allow_in  = ~ID_valid  | (ID_over  & EXE_allow_in);
-    assign ID_allow_in  = (~ID_valid  | (ID_over  & EXE_allow_in))&~predict_error;
+    assign ID_allow_in  = ~ID_valid  | (ID_over  & EXE_allow_in);
+//    assign ID_allow_in  = (~ID_valid  | (ID_over  & EXE_allow_in))&~predict_error;
     assign EXE_allow_in = ~EXE_valid | (EXE_over & MEM_allow_in);
     assign MEM_allow_in = ~MEM_valid | (MEM_over & WB_allow_in );
     assign WB_allow_in  = ~WB_valid  | WB_over;
