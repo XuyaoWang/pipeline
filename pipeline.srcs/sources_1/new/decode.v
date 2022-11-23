@@ -28,17 +28,17 @@ module decode(                      // 译码级
     //展示PC
     output     [ 31:0] ID_pc,
     
-    output      [1:0] state_,
+    output [1:0]state0,
+    output [1:0]state1,
     output      predict_error,      // 预测错误信号
     output      [31:0] br,
     output      predict_valid_,
     output      predict_taken_,
-    output      predict_over_
+    output      predict_update_state_
 );
 
-    assign state_ = state;
     assign br= {20'b0,{4{predict_valid}},{4{br_taken}},4'b0};
-    assign {predict_valid_,predict_taken_,predict_over_}={predict_valid,predict_taken,predict_over};
+    assign {predict_valid_,predict_taken_,predict_update_state_}={predict_valid,predict_taken,predict_update_state};
 
 //-----{IF->ID总线}begin
     wire [31:0] pc;
@@ -239,48 +239,6 @@ module decode(                      // 译码级
     assign br_target[31:2] = bd_pc[31:2] + {{14{offset[15]}}, offset};  
     assign br_target[1:0]  = bd_pc[1:0];
     
-    //-------------------{分支预测}---------------begin
-    wire predict_valid;
-    wire predict_taken;
-    assign predict_valid = inst_BEQ 
-                         | inst_BNE 
-                         | inst_BGEZ
-                         | inst_BGTZ
-                         | inst_BLEZ
-                         | inst_BLTZ;
-    assign predict_taken = predict_valid ? 0: state==2'b00||state==2'b01;
-    assign predict_error = resetn ? 0 : predict_valid ? br_taken == predict_taken : 0 ;        
-    reg predict_over;
-    reg [1:0] state ;
-    always @(posedge clk)
-    begin
-       if(!resetn)
-       begin
-            state <= 2'b10;
-            predict_over <= 1'b0;
-       end 
-       else if(!predict_valid)
-       begin
-            predict_over <= 1'b0; 
-       end
-       else if(predict_valid && !predict_over)    
-       begin
-           case(state)
-                2'b00 : state <= br_taken?2'b00:2'b01;
-                2'b01 : state <= br_taken?2'b00:2'b10;
-                2'b10 : state <= br_taken?2'b11:2'b10;
-                2'b11 : state <= br_taken?2'b00:2'b10;
-           endcase                                                                                                                                                                                                                                                                                                  
-           predict_over <= 1'b1; 
-       end
-    end
-    
-    //-------------------{分支预测}---------------end
-    
-    
-    
-    
-    
     //jump and branch指令
     wire jbr_taken;
     wire [31:0] jbr_target;
@@ -388,7 +346,31 @@ module decode(                      // 译码级
     assign ID_pc = pc;
 //-----{展示ID模块的PC值}end
 
-
+    //-------------------{分支预测}---------------begin
+    wire predict_valid;
+    wire predict_taken;
+    wire predict_update_state;
     
+    assign predict_valid = inst_BEQ 
+                         | inst_BNE 
+                         | inst_BGEZ
+                         | inst_BGTZ
+                         | inst_BLEZ
+                         | inst_BLTZ;
+    assign predict_update_state = ID_over? 0: predict_valid? 1:0;
+    assign predict_error = resetn ? 0 : predict_valid ? br_taken == predict_taken : 0 ;
+    bp BP_module(
+        .clk(clk),
+        .resetn(resetn),        
+        .inst_addr(pc),
+        .predict_valid(predict_valid),
+        .predict_taken(predict_taken),
+        .predict_update_state(predict_update_state),
+        .br_taken(br_taken),
+        .state0(state0),
+        .state1(state1)
+    );
+    
+    //-------------------{分支预测}---------------end
 
 endmodule

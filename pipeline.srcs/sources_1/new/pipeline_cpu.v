@@ -54,13 +54,14 @@ module pipeline_cpu(  // 多周期cpu
     output [153:0] EXE_MEM_bus_r_,
     output [117:0] MEM_WB_bus_r_,
     
-    output  [1:0] state ,
+    output   [1:0] state0,
+    output   [1:0] state1,
     output  [31:0] predict,
     output  [31:0] br
     );
     
     assign jbr_bus_=jbr_bus;
-    assign predict = {16'b0,{4{predict_error}},{4{predict_valid}},{4{predict_taken}},{4{predict_over}}};
+    assign predict = {16'b0,{4{predict_error}},{4{predict_valid}},{4{predict_taken}},{4{predict_update_state}}};
     
     assign cpu_5_over_ =  {12'd0         ,{4{IF_over }},{4{ID_over}},
                           {4{EXE_over}},{4{MEM_over}},{4{WB_over}}};
@@ -242,9 +243,10 @@ module pipeline_cpu(  // 多周期cpu
     
     // 分支预测信号 
     wire predict_error; 
+    wire predict_correct;
     wire predict_valid;
     wire predict_taken;
-    wire predict_over;
+    wire predict_update_state;
 
     //IF与inst_rom交互
     wire [31:0] inst_addr;
@@ -328,8 +330,9 @@ module pipeline_cpu(  // 多周期cpu
         .predict_error(predict_error),
         .predict_valid_(predict_valid),
         .predict_taken_(predict_taken),
-        .predict_over_(predict_over),
-        .state_(state),
+        .predict_update_state_(predict_update_state),
+        .state0(state0),
+        .state1(state1),
         .br(br)
     ); 
 
@@ -374,7 +377,7 @@ module pipeline_cpu(  // 多周期cpu
         .rf_wen      (rf_wen      ),  // O, 1
         .rf_wdest    (rf_wdest    ),  // O, 5
         .rf_wdata    (rf_wdata    ),  // O, 32
-          .WB_over     (WB_over     ),  // O, 1
+        .WB_over     (WB_over     ),  // O, 1
         
         //5级流水新增接口
         .clk         (clk         ),  // I, 1

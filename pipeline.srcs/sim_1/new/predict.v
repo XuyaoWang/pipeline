@@ -25,7 +25,7 @@ module predict;
     reg clk;
     reg resetn;
     reg [4:0] rf_addr;
-    reg [31:0] mem_addr;
+//    reg [31:0] mem_addr;
 
     // Outputs
     wire [31:0] rf_data;
@@ -33,9 +33,6 @@ module predict;
     wire [31:0] IF_pc;
     wire [31:0] IF_inst;
     wire [31:0] ID_pc;
-    wire [31:0] EXE_pc;
-    wire [31:0] MEM_pc;
-    wire [31:0] WB_pc;
     wire [31:0] cpu_5_valid;
     
     wire [31:0] cpu_5_over;
@@ -47,14 +44,9 @@ module predict;
 
     wire [ 63:0] IF_ID_bus;
     wire [ 63:0] IF_ID_bus_r;
-
-    wire [166:0] ID_EXE_bus_r;
-
-    wire [153:0] EXE_MEM_bus_r;
     
-    wire [117:0] MEM_WB_bus_r;
-    
-    wire [1:0] state;
+    wire [1:0] state0;
+    wire [1:0] state1;
     wire [31:0] predict;
     wire [31:0] br;
 
@@ -67,9 +59,6 @@ module predict;
         .IF_pc(IF_pc), 
         .IF_inst(IF_inst), 
         .ID_pc(ID_pc), 
-        .EXE_pc(EXE_pc), 
-        .MEM_pc(MEM_pc), 
-        .WB_pc(WB_pc), 
         
         .cpu_5_valid(cpu_5_valid),
         
@@ -82,11 +71,9 @@ module predict;
 
         .IF_ID_bus_(IF_ID_bus),
         .IF_ID_bus_r_(IF_ID_bus_r),
-        .ID_EXE_bus_r_(ID_EXE_bus_r),
-        .EXE_MEM_bus_r_(EXE_MEM_bus_r),
-        .MEM_WB_bus_r_(MEM_WB_bus_r),
         
-        .state(state),
+        .state0(state0),
+        .state1(state1),
         .predict(predict),
         .br(br)
     );

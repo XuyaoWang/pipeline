@@ -24,7 +24,8 @@ module fetch(                    // 取指级
     output     [31:0] IF_pc,
     output     [31:0] IF_inst,
     
-    input      predict_error      // 预测错误信号
+    input      predict_error,      // 预测错误信号
+    output     predict_correct     // 已修正信号
 );
 
 //-----{程序计数器PC}begin
