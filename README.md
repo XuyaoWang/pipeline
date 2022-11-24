@@ -1,12 +1,12 @@
 # pipeline
 This version realizes branch prediction based on branch master. In test instructions my code could predict if br instruction will be taken and correct target address if prediction is wrong.
 The algorithm of prediction is [Prediction based on two-digit saturation counter](https://zhuanlan.zhihu.com/p/490749315). ![stretch map](image/theory%20of%20bp.png)
-The state machine![](image/state%20machine.png) is written in bp.v
+The state machine![state machine](image/state%20machine.png) is written in bp.v
 It might have many bugs in my code,if run on other instructions you must prepare to debug.
 Test instructions is adapted from the question in the picture below
-![](image/question.png)
+![question](image/question.png)
 and the corresponding answer is as follows
-![](image/answer.png)
+![answer](image/answer.png)
 In test instruction
 ```
 0  : 24010008;  % main:   addiu $1, $0, 8 | 00100100000000010000000000001000 %
