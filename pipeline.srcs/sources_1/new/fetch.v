@@ -19,17 +19,39 @@ module fetch(                    // 取指级
     
     //5级流水新增接口
     input      [32:0] exc_bus,   // Exception pc总线
+    input      [ 1:0] ID_Delay,
+    output      [1:0] D_de,
         
     //展示PC和取出的指令
     output     [31:0] IF_pc,
-    output     [31:0] IF_inst
+    output     [31:0] IF_inst,
+    output   D,
+    output   D1   
 );
+    wire [1:0] DDD;
+    reg [1:0] D_delay;
+    assign DDD = D_delay;
+    assign D_de = DDD;
+    reg stateD = 1'b0;
+    always @(*)
+    begin
+        if(ID_Delay == 2'b10 )
+        begin
+            D_delay <= 2'b11;
+            stateD <= 1'b1;
+        end
+    end   
+
+// 延迟一个cycle周期
+    reg  Delay = 1'b0;
+    reg  Delay1 = 1'b0;
+   
+
 
 //-----{程序计数器PC}begin
     wire [31:0] next_pc;
     wire [31:0] seq_pc;
     reg  [31:0] pc;
-    reg  [31:0] predict_pc;
     
     //跳转pc
     wire        jbr_taken;
@@ -57,14 +79,13 @@ module fetch(                    // 取指级
         end
         else if (next_fetch)
         begin
-            predict_pc <= next_pc;
             pc <= next_pc;    // 不复位，取新指令
         end
     end
 //-----{程序计数器PC}end
 
+//-----{发往inst_rom的取指地址}begin
     assign inst_addr = pc;
-    
 //-----{发往inst_rom的取指地址}end
 
 //-----{IF执行完成}begin
@@ -74,29 +95,62 @@ module fetch(                    // 取指级
     //故取指模块需要两拍时间
     //故每次PC刷新，IF_over都要置0
     //然后将IF_valid锁存一拍即是IF_over信号
-    reg counter;
+    always @(posedge clk)
+    begin
+        D_delay <= D_delay - 2'b01;
+        if (!resetn || next_fetch)
+        begin
+            IF_over <= 1'b0;
+            Delay <= 1'b0;
+        end
+        else
+        begin
+            if(Delay == 1'b0)
+                Delay = 1'b1;
+            else
+            begin
+                if(stateD == 1'b1)
+                begin
+                    if(D_delay == 2'b10)
+                    begin
+                        stateD <= 0;
+                    end
+                end
+                else
+                begin
+                    IF_over <= IF_valid;
+                    Delay <= 1'b0;
+                end
+            end
+        end
+    end
+
     always @(posedge clk)
     begin
         if (!resetn || next_fetch)
         begin
-            IF_over <= 1'b0;
-            counter <= 1'b0;
         end
-        else if(counter == 1'b0)
+        else
         begin
-            counter <= 1'b1;
-        end
-        else 
-        begin
-            IF_over <= IF_valid;
+            if(Delay1 == 1'b0)
+                Delay1 = 1'b1;
+            else
+            begin
+                 Delay1 <= 1'b0;
+            end
         end
     end
+
+
+    assign D = Delay;
+    assign D1 = Delay1;
+
     //如果指令rom为异步读的，则IF_valid即是IF_over信号，
     //即取指一拍完成
 //-----{IF执行完成}end
 
 //-----{IF->ID总线}begin
-    assign IF_ID_bus={pc, inst};  // 取指级有效时，锁存PC和指令
+    assign IF_ID_bus = {pc, inst};  // 取指级有效时，锁存PC和指令
 //-----{IF->ID总线}end
 
 //-----{展示IF模块的PC值和指令}begin

@@ -33,41 +33,52 @@ module tb;
     // Outputs
     wire [31:0] rf_data;
     wire [31:0] mem_data;
-    wire [31:0] IF_pc;
     wire [31:0] IF_inst;
+    wire [31:0] IF_pc;
     wire [31:0] ID_pc;
     wire [31:0] EXE_pc;
     wire [31:0] MEM_pc;
     wire [31:0] WB_pc;
     wire [31:0] cpu_5_valid;
+    wire [31:0] HI_data;
+    wire [31:0] LO_data;
     
-    wire [31:0] cpu_5_over;
-    wire [31:0] cpu_5_allow_in;
+    wire [ 63:0] IF_ID;
+    wire [178:0] ID_EXE;
+    wire [153:0] EXE_MEM;
+    wire [117:0] MEM_WB;
     
-    wire [31:0] inst;
-    wire [31:0] inst_addr;
-    wire next_fetch;
-    
-    wire [31:0] rs_value;
+    wire F_Over;
+    wire F_Valid;
+    wire D;
+//    wire D1;
+    wire D_Over;
+    wire D_Valid;
+    wire E_Over;
+    wire E_Valid;
+    wire M_Over;
+    wire M_Valid;
+    wire W_Over;
+    wire W_Valid;
+    wire M_lw;
+    wire inst_lw;
+    wire inst_sw;
+    wire ID_C;
+    wire [1:0] ID_Delay;
+    wire [1:0] DDD;
+    wire [31:0] O1;
+    wire [31:0] O2;
+    wire [31:0] EXE_O;
+    wire [31:0] M_S;
+    wire [31:0] W_S;
+    wire [ 4:0] E_d;
+    wire [ 4:0] M_d;
+    wire [ 4:0] W_d;
     wire [ 4:0] rs;
+    wire [ 4:0] rt;   
+    wire [31:0] rs_value;
     wire [31:0] rt_value;
-    wire [ 4:0] rt;
-    
-    wire [ 31:0] alu_result;
-    
-    wire [ 63:0] IF_ID_bus;   // IF->ID级总线
-    wire [ 63:0] IF_ID_bus_r;
-    
-    wire [166:0] ID_EXE_bus;  // ID->EXE级总线
-    wire [166:0] ID_EXE_bus_r;
-    
-    wire [153:0] EXE_MEM_bus; // EXE->MEM级总线
-    wire [153:0] EXE_MEM_bus_r;
-    
-    wire [117:0] MEM_WB_bus;  // MEM->WB级总线
-    wire [117:0] MEM_WB_bus_r;
 
-    
     // Instantiate the Unit Under Test (UUT)
     pipeline_cpu uut (
         .clk(clk), 
@@ -76,36 +87,51 @@ module tb;
         .mem_addr(mem_addr), 
         .rf_data(rf_data), 
         .mem_data(mem_data), 
-        .IF_pc(IF_pc), 
         .IF_inst(IF_inst), 
+        .IF_pc(IF_pc), 
         .ID_pc(ID_pc), 
         .EXE_pc(EXE_pc), 
         .MEM_pc(MEM_pc), 
         .WB_pc(WB_pc), 
         .cpu_5_valid(cpu_5_valid),
+        .HI_data(cpu_5_valid),
+        .LO_data(cpu_5_valid),
         
-        .cpu_5_over_(cpu_5_over),
-        .cpu_5_allow_in_(cpu_5_allow_in),
+        .IF_ID(IF_ID),
+        .ID_EXE(ID_EXE),
+        .EXE_MEM(EXE_MEM),
+        .MEM_WB(MEM_WB),
         
-        .inst_(inst),
-        .inst_addr_(inst_addr),
-        .next_fetch_(next_fetch),
-        
-        .rs_value_(rs_value),
-        .rs_(rs),
-        .rt_value_(rt_value),
-        .rt_(rt),
-        
-        .alu_result_(alu_result),
-        
-        .IF_ID_bus_(IF_ID_bus),
-        .IF_ID_bus_r_(IF_ID_bus_r),
-        .ID_EXE_bus_(ID_EXE_bus),
-        .ID_EXE_bus_r_(ID_EXE_bus_r),
-        .EXE_MEM_bus_(EXE_MEM_bus),
-        .EXE_MEM_bus_r_(EXE_MEM_bus_r),
-        .MEM_WB_bus_(MEM_WB_bus),
-        .MEM_WB_bus_r_(MEM_WB_bus_r)
+        .F_Over(F_Over),
+        .F_Valid(F_Valid),
+        .D(D),
+//        .D1(D1),
+        .D_Over(D_Over),
+        .D_Valid(D_Valid),
+        .E_Over(E_Over),
+        .E_Valid(E_Valid),
+        .M_Over(M_Over),
+        .M_Valid(M_Valid),
+        .W_Over(W_Over),
+        .W_Valid(W_Valid),
+        .M_lw(M_lw),
+        .inst_lw(inst_lw),
+        .inst_sw(inst_sw),
+        .ID_C(ID_C),
+        .ID_Delay(ID_Delay),
+        .DDD(DDD),
+        .O1(O1),
+        .O2(O2),
+        .EXE_O(EXE_O),
+        .M_S(M_S),
+        .W_S(W_S),
+        .E_d(E_d),
+        .M_d(M_d),
+        .W_d(W_d),
+        .rs(rs),
+        .rt(rt),
+        .rs_value(rs_value),
+        .rt_value(rt_value)
     );
 
     initial begin
@@ -117,7 +143,11 @@ module tb;
 
         // Wait 100 ns for global reset to finish
         #100;
-      resetn = 1;
+        resetn = 1;
+        rf_addr = 3;
+        #200;
+        rf_addr = 17;
+        mem_addr = 32;
         // Add stimulus here
     end
    always #5 clk=~clk;

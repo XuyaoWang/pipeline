@@ -6,8 +6,6 @@
 //   > 日期  : 2016-04-14
 //*************************************************************************
 module decode(                      // 译码级
-    input              clk,       // 时钟
-    input              resetn,    // 复位信号，低电平有效
     input              ID_valid,    // 译码级有效信号
     input      [ 63:0] IF_ID_bus_r, // IF->ID总线
     input      [ 31:0] rs_value,    // 第一源操作数值
@@ -17,7 +15,7 @@ module decode(                      // 译码级
     output     [ 32:0] jbr_bus,     // 跳转总线
 //  output             inst_jbr,    // 指令为跳转分支指令,五级流水不需要
     output             ID_over,     // ID模块执行完成
-    output     [166:0] ID_EXE_bus,  // ID->EXE总线
+    output     [178:0] ID_EXE_bus,  // ID->EXE总线
     
     //5级流水新增
     input              IF_over,     //对于分支指令，需要该信号
@@ -227,6 +225,7 @@ module decode(                      // 译码级
     assign br_target[31:2] = bd_pc[31:2] + {{14{offset[15]}}, offset};  
     assign br_target[1:0]  = bd_pc[1:0];
     
+    //jump and branch指令
     wire jbr_taken;
     wire [31:0] jbr_target;
     assign jbr_taken = (j_taken | br_taken) & ID_over; 
@@ -240,17 +239,21 @@ module decode(                      // 译码级
     //由于是流水的，存在数据相关
     wire rs_wait;
     wire rt_wait;
-    assign rs_wait = ~inst_no_rs & (rs!=5'd0)
-                   & ( (rs==EXE_wdest) | (rs==MEM_wdest) | (rs==WB_wdest) );
-    assign rt_wait = ~inst_no_rt & (rt!=5'd0)
-                   & ( (rt==EXE_wdest) | (rt==MEM_wdest) | (rt==WB_wdest) );
+//    assign rs_wait = ~inst_no_rs & (rs!=5'd0)
+//                   & ( (rs==EXE_wdest) | (rs==MEM_wdest) | (rs==WB_wdest) );
+//    assign rt_wait = ~inst_no_rt & (rt!=5'd0)
+//                   & ( (rt==EXE_wdest) | (rt==MEM_wdest) | (rt==WB_wdest) );
+    assign rs_wait = ~inst_no_rs & (rs!=5'd0);
+    assign rt_wait = ~inst_no_rt & (rt!=5'd0);
+
     
     //对于分支跳转指令，只有在IF执行完成后，才可以算ID完成；
     //否则，ID级先完成了，而IF还在取指令，则next_pc不能锁存到PC里去，
     //那么等IF完成，next_pc能锁存到PC里去时，jbr_bus上的数据已变成无效，
     //导致分支跳转失败
     //(~inst_jbr | IF_over)即是(~inst_jbr | (inst_jbr & IF_over))
-    assign ID_over = ID_valid & ~rs_wait & ~rt_wait & (~inst_jbr | IF_over);
+//    assign ID_over = ID_valid & ~rs_wait & ~rt_wait & (~inst_jbr | IF_over);
+    assign ID_over = ID_valid & (~inst_jbr | IF_over);
 //-----{ID执行完成}end
 
 //-----{ID->EXE总线}begin
@@ -319,13 +322,15 @@ module decode(                      // 译码级
                       inst_wdest_31 ? 5'd31 :  //以便能准确判断数据相关
                       inst_wdest_rd ? rd : 5'd0;
     assign store_data = rt_value;
-    assign ID_EXE_bus = {multiply,mthi,mtlo,                   //EXE需用的信息,新增   [166:164]
-                         alu_control,alu_operand1,alu_operand2,//EXE需用的信息        [163:88]
-                         mem_control,store_data,               //MEM需用的信号        [87:52]
-                         mfhi,mflo,                            //WB需用的信号,新增    [51:50]
-                         mtc0,mfc0,cp0r_addr,syscall,eret,     //WB需用的信号,新增    [49:38]
-                         rf_wen, rf_wdest,                     //WB需用的信号         [37:32]
-                         pc};                                  //PC值                 [31:0]
+    assign ID_EXE_bus = {multiply,mthi,mtlo,                   //EXE需用的信息,新增
+                         alu_control,alu_operand1,alu_operand2,//EXE需用的信息
+                         mem_control,store_data,               //MEM需用的信号
+                         mfhi,mflo,                            //WB需用的信号,新增
+                         mtc0,mfc0,cp0r_addr,syscall,eret,     //WB需用的信号,新增
+                         rs,rt,
+                         inst_no_rs,inst_no_rt,
+                         rf_wen, rf_wdest,                     //WB需用的信号
+                         pc};                                  //PC值
 //-----{ID->EXE总线}end
 
 //-----{展示ID模块的PC值}begin

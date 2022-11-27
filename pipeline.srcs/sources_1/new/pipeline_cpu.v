@@ -15,8 +15,8 @@ module pipeline_cpu(  // 多周期cpu
     input  [31:0] mem_addr,
     output [31:0] rf_data,
     output [31:0] mem_data,
-    output [31:0] IF_pc,
     output [31:0] IF_inst,
+    output [31:0] IF_pc,
     output [31:0] ID_pc,
     output [31:0] EXE_pc,
     output [31:0] MEM_pc,
@@ -27,65 +27,51 @@ module pipeline_cpu(  // 多周期cpu
     output [31:0] HI_data,
     output [31:0] LO_data,
     
-    output [31:0] cpu_5_over_,
-    output [31:0] cpu_5_allow_in_,
+    output [ 63:0] IF_ID,
+    output [178:0] ID_EXE,
+    output [153:0] EXE_MEM,
+    output [117:0] MEM_WB,
     
-    output [31:0] inst_,
-    output [31:0] inst_addr_,
-    output next_fetch_,
-    
-    output [31:0] rs_value_,
-    output [ 4:0] rs_,
-    output [31:0] rt_value_,
-    output [ 4:0] rt_,
-    
-    output [ 31:0] alu_result_,
-    
-    output [ 63:0] IF_ID_bus_,   // IF->ID级总线
-    output [166:0] ID_EXE_bus_,  // ID->EXE级总线
-    output [153:0] EXE_MEM_bus_, // EXE->MEM级总线
-    output [117:0] MEM_WB_bus_,  // MEM->WB级总线
-    
-    //锁存以上总线信号
-    output [ 63:0] IF_ID_bus_r_,
-    output [166:0] ID_EXE_bus_r_,
-    output [153:0] EXE_MEM_bus_r_,
-    output [117:0] MEM_WB_bus_r_
+    //新增消息记录
+    output F_Over,
+    output F_Valid,
+    output D,
+//    output D1,
+    output D_Over,
+    output D_Valid,
+    output E_Over,
+    output E_Valid,
+    output M_Over,
+    output M_Valid,
+    output W_Over,
+    output W_Valid,
+    output M_lw,
+    output inst_lw,
+    output inst_sw,
+    output ID_C,
+    output [1:0] ID_Delay,
+    output [1:0] DDD,
+    output [31:0] O1,
+    output [31:0] O2,
+    output [31:0] EXE_O,
+    output [31:0] M_S,
+    output [31:0] W_S,
+    output [4:0] E_d,
+    output [4:0] M_d,
+    output [4:0] W_d,
+    output [4:0] rs,
+    output [4:0] rt,
+    output [31:0] rs_value,
+    output [31:0] rt_value
     );
-    
-    assign cpu_5_over_ =  {12'd0         ,{4{IF_over }},{4{ID_over}},
-                          {4{EXE_over}},{4{MEM_over}},{4{WB_over}}};
-    assign cpu_5_allow_in_ = {12'd0         ,{4{IF_allow_in }},{4{ID_allow_in}},
-                          {4{EXE_allow_in}},{4{MEM_allow_in}},{4{WB_allow_in}}};
-    
-    assign inst_=inst;
-    assign inst_addr_=inst_addr;
-    assign next_fetch_=next_fetch;
-    
-    assign rs_value_=rs_value;
-    assign rs_=rs;
-    assign rt_value_=rt_value;
-    assign rt_=rt;
-    
-    assign IF_ID_bus_=IF_ID_bus; 
-    assign ID_EXE_bus_=ID_EXE_bus;
-    assign EXE_MEM_bus_=EXE_MEM_bus; 
-    assign MEM_WB_bus_=MEM_WB_bus; 
-    
-    //锁存以上总线信号
-    assign IF_ID_bus_r_=IF_ID_bus_r;
-    assign ID_EXE_bus_r_=ID_EXE_bus_r;
-    assign EXE_MEM_bus_r_=EXE_MEM_bus_r;
-    assign MEM_WB_bus_r_ = MEM_WB_bus_r ; 
-    
-    
 //------------------------{5级流水控制信号}begin-------------------------//
     //5模块的valid信号
     reg IF_valid;
     reg ID_valid;
     reg EXE_valid;
     reg MEM_valid;
-    reg WB_valid;
+    reg WB_valid;  
+    
     //5模块执行完成信号,来自各模块的输出
     wire IF_over;
     wire ID_over;
@@ -99,6 +85,17 @@ module pipeline_cpu(  // 多周期cpu
     wire MEM_allow_in;
     wire WB_allow_in;
     
+    assign F_Over = IF_over;
+    assign F_Valid = IF_valid;
+    assign D_Over = ID_over;
+    assign D_Valid = ID_valid;
+    assign E_Over = EXE_over;
+    assign E_Valid = EXE_valid;    
+    assign M_Over = MEM_over;
+    assign M_Valid = MEM_valid;  
+    assign W_Over = WB_over;
+    assign W_Valid = WB_valid;
+    
     // syscall和eret到达写回级时会发出cancel信号，
     wire cancel;    // 取消已经取出的正在其他流水级执行的指令
     
@@ -108,6 +105,11 @@ module pipeline_cpu(  // 多周期cpu
     assign EXE_allow_in = ~EXE_valid | (EXE_over & MEM_allow_in);
     assign MEM_allow_in = ~MEM_valid | (MEM_over & WB_allow_in );
     assign WB_allow_in  = ~WB_valid  | WB_over;
+    wire MEM_valid_r;
+    assign M_lw = MEM_valid_r;
+    assign ID_C = MEM_valid_r & inst_lw ;
+    reg  ID_delay_1;
+    assign ID_Delay = ID_C? 2'b10 : 2'b00;
    
     //IF_valid，在复位后，一直有效
    always @(posedge clk)
@@ -121,6 +123,14 @@ module pipeline_cpu(  // 多周期cpu
             IF_valid <= 1'b1;
         end
     end
+    
+//    always @(posedge clk)
+//    begin    
+//        if (ID_C)
+//        begin
+//            ID_delay_1 <= 2'b10;
+//        end
+//    end
     
     //ID_valid
     always @(posedge clk)
@@ -177,20 +187,29 @@ module pipeline_cpu(  // 多周期cpu
     //展示5级的valid信号
     assign cpu_5_valid = {12'd0         ,{4{IF_valid }},{4{ID_valid}},
                           {4{EXE_valid}},{4{MEM_valid}},{4{WB_valid}}};
-    
 //-------------------------{5级流水控制信号}end--------------------------//
 
 //--------------------------{5级间的总线}begin---------------------------//
     wire [ 63:0] IF_ID_bus;   // IF->ID级总线
-    wire [166:0] ID_EXE_bus;  // ID->EXE级总线
+    wire [178:0] ID_EXE_bus;  // ID->EXE级总线
     wire [153:0] EXE_MEM_bus; // EXE->MEM级总线
     wire [117:0] MEM_WB_bus;  // MEM->WB级总线
     
+    wire [31:0] MEM_result;
+    wire [31:0] WB_result;
+    assign M_S = MEM_result;
+    assign W_S = WB_result;
+    
     //锁存以上总线信号
     reg [ 63:0] IF_ID_bus_r;
-    reg [166:0] ID_EXE_bus_r;
+    reg [178:0] ID_EXE_bus_r;
     reg [153:0] EXE_MEM_bus_r;
     reg [117:0] MEM_WB_bus_r;
+    
+    assign IF_ID =  IF_ID_bus_r;
+    assign ID_EXE =  ID_EXE_bus_r;
+    assign EXE_MEM = EXE_MEM_bus_r;
+    assign MEM_WB = MEM_WB_bus_r;
     
     //IF到ID的锁存信号
     always @(posedge clk)
@@ -228,7 +247,7 @@ module pipeline_cpu(  // 多周期cpu
 
 //--------------------------{其他交互信号}begin--------------------------//
     //跳转总线
-    wire [ 32:0] jbr_bus;   
+    wire [ 32:0] jbr_bus;    
 
     //IF与inst_rom交互
     wire [31:0] inst_addr;
@@ -238,6 +257,9 @@ module pipeline_cpu(  // 多周期cpu
     wire [ 4:0] EXE_wdest;
     wire [ 4:0] MEM_wdest;
     wire [ 4:0] WB_wdest;
+    assign E_d = EXE_wdest;
+    assign M_d = MEM_wdest;
+    assign W_d = WB_wdest;
     
     //MEM与data_ram交互    
     wire [ 3:0] dm_wen;
@@ -246,10 +268,10 @@ module pipeline_cpu(  // 多周期cpu
     wire [31:0] dm_rdata;
 
     //ID与regfile交互
-    wire [ 4:0] rs;
-    wire [ 4:0] rt;   
-    wire [31:0] rs_value;
-    wire [31:0] rt_value;
+//    wire [ 4:0] rs;
+//    wire [ 4:0] rt;   
+//    wire [31:0] rs_value;
+//    wire [31:0] rt_value;
     
     //WB与regfile交互
     wire        rf_wen;
@@ -261,7 +283,6 @@ module pipeline_cpu(  // 多周期cpu
 //---------------------------{其他交互信号}end---------------------------//
 
 //-------------------------{各模块实例化}begin---------------------------//
-    
     wire next_fetch; //即将运行取指模块，需要先锁存PC值
     //IF允许进入时，即锁存PC值，取下一条指令
     assign next_fetch = IF_allow_in;
@@ -278,10 +299,14 @@ module pipeline_cpu(  // 多周期cpu
         
         //5级流水新增接口
         .exc_bus   (exc_bus   ),  // I, 32
+        .ID_Delay  (ID_Delay),
+        .D_de   (DDD),
         
         //展示PC和取出的指令
         .IF_pc     (IF_pc     ),  // O, 32
-        .IF_inst   (IF_inst   )   // O, 32
+        .IF_inst   (IF_inst   ),  // O, 32
+        .D(D)
+//        .D1(D1)
     );
 
     decode ID_module(               // 译码级
@@ -315,8 +340,13 @@ module pipeline_cpu(  // 多周期cpu
         //5级流水新增
         .clk         (clk         ),  // I, 1
         .EXE_wdest   (EXE_wdest   ),  // O, 5
-        
-        .alu_result_(alu_result_),
+        .MEM_wdest   (MEM_wdest   ),// I, 5
+        .WB_wdest    (WB_wdest    ),// I, 5
+        .MEM_result  (MEM_result  ),
+        .WB_result   (WB_result),
+        .O1 (O1),
+        .O2 (O2),
+        .EXE_O(EXE_O),
         
         //展示PC
         .EXE_pc      (EXE_pc      )   // O, 32
@@ -336,6 +366,10 @@ module pipeline_cpu(  // 多周期cpu
         //5级流水新增接口
         .MEM_allow_in (MEM_allow_in ),  // I, 1
         .MEM_wdest    (MEM_wdest    ),  // O, 5
+        .MEM_result  (MEM_result  ),
+        .MEM_valid_r (MEM_valid_r),
+        .inst_lw     (inst_lw),
+        .inst_sw     (inst_sw),
         
         //展示PC
         .MEM_pc       (MEM_pc       )   // O, 32
@@ -355,6 +389,7 @@ module pipeline_cpu(  // 多周期cpu
         .exc_bus     (exc_bus     ),  // O, 32
         .WB_wdest    (WB_wdest    ),  // O, 5
         .cancel      (cancel      ),  // O, 1
+        .WB_result   (WB_result),
         
         //展示PC和HI/LO值
         .WB_pc       (WB_pc       ),  // O, 32

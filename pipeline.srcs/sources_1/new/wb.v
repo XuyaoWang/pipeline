@@ -13,7 +13,8 @@ module wb(                       // 写回级
     output         rf_wen,       // 寄存器写使能
     output [  4:0] rf_wdest,     // 寄存器写地址
     output [ 31:0] rf_wdata,     // 寄存器写数据
-    output         WB_over,      // WB模块执行完成
+//    output  reg    WB_over,      // WB模块执行完成
+    output      WB_over,      // WB模块执行完成
 
      //5级流水新增接口
      input             clk,       // 时钟
@@ -22,6 +23,7 @@ module wb(                       // 写回级
      output [  4:0] WB_wdest,     // WB级要写回寄存器堆的目标地址号
      output         cancel,       // syscall和eret到达写回级时会发出cancel信号，
                                   // 取消已经取出的正在其他流水级执行的指令
+    output  [ 31:0] WB_result,
  
      //展示PC和HI/LO值
      output [ 31:0] WB_pc,
@@ -171,7 +173,15 @@ module wb(                       // 写回级
 //-----{WB执行完成}begin
     //WB模块所有操作都可在一拍内完成
     //故WB_valid即是WB_over信号
+//    always @(posedge clk)
+//    begin
+//        WB_over <= WB_valid;
+//    end
     assign WB_over = WB_valid;
+//    always @(posedge clk)
+//    begin
+//        WB_over <= WB_valid;
+//    end
 //-----{WB执行完成}end
 
 //-----{WB->regfile信号}begin
@@ -180,6 +190,7 @@ module wb(                       // 写回级
     assign rf_wdata = mfhi ? hi :
                       mflo ? lo :
                       mfc0 ? cp0r_rdata : mem_result;
+    assign WB_result = rf_wdata;                   
 //-----{WB->regfile信号}end
 
 //-----{Exception pc信号}begin
@@ -196,7 +207,20 @@ module wb(                       // 写回级
 
 //-----{WB模块的dest值}begin
    //只有在WB模块有效时，其写回目的寄存器号才有意义
-    assign WB_wdest = rf_wdest & {5{WB_valid}};
+   reg [1:0] wdest_Delay = 2'b00;
+   always @(posedge clk)
+   begin
+       if(WB_valid)
+       begin
+           wdest_Delay = 2'b11;
+       end
+       else
+       begin
+           wdest_Delay <= wdest_Delay - 2'b01;
+       end
+   end
+   assign WB_wdest = rf_wdest & {5{WB_valid||wdest_Delay[0]}};
+//    assign WB_wdest = rf_wdest & {5{WB_valid}};
 //-----{WB模块的dest值}end
 
 //-----{展示WB模块的PC值和HI/LO寄存器的值}begin

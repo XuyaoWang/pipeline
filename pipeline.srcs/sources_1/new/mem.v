@@ -19,6 +19,10 @@ module mem(                          // 访存级
     //5级流水新增接口
     input              MEM_allow_in, // MEM级允许下级进入
     output     [  4:0] MEM_wdest,    // MEM级要写回寄存器堆的目标地址号
+    output     [ 31:0] MEM_result,
+    output     reg MEM_valid_r,
+    output     inst_lw,
+    output     inst_sw,
      
     //展示PC
     output     [ 31:0] MEM_pc
@@ -65,9 +69,14 @@ module mem(                          // 访存级
             pc         } = EXE_MEM_bus_r;  
 //-----{EXE->MEM总线}end
 
+    //延迟一个 cycle
+    reg [1:0] Delay = 1'b0;
+
 //-----{load/store访存}begin
     wire inst_load;  //load操作
+    assign inst_lw = inst_load;
     wire inst_store; //store操作
+    assign inst_sw = inst_store;
     wire ls_word;    //load/store为字节还是字,0:byte;1:word
     wire lb_sign;    //load一字节为有符号load
     assign {inst_load,inst_store,ls_word,lb_sign} = mem_control;
@@ -132,25 +141,40 @@ module mem(                          // 访存级
     //即发地址的下一拍时钟才能得到load的数据
     //故mem在进行load操作时有需要两拍时间才能取到数据
     //而对其他操作，则只需要一拍时间
-    reg MEM_valid_r;
-    reg counter;
+//    reg MEM_valid_r;
     always @(posedge clk)
     begin
         if (MEM_allow_in)
         begin
             MEM_valid_r <= 1'b0;
-            counter <= 0;
-        end 
-        else if(counter == 1'b0)
-        begin
-            counter <= 1'b1;
         end
         else
         begin
-            MEM_valid_r <= MEM_valid;
+            if(Delay == 1'b0)
+                Delay = 1'b1;
+            else
+            begin
+                MEM_valid_r <= MEM_valid;
+                Delay = 1'b0;
+            end
+//            MEM_valid_r <= MEM_valid;
+//            if (MEM_valid)
+//            begin
+//                if(Delay == 2'b00)
+//                    Delay <= Delay + 2'b01;
+//                else
+//                begin
+//                    MEM_valid_r <= MEM_valid;
+//                end
+//            end
+//            else
+//            begin
+//                MEM_valid_r <= MEM_valid;
+//                Delay <= 2'b00;
+//            end
         end
     end
-    assign MEM_over = inst_load ? MEM_valid_r : MEM_valid;
+    assign MEM_over = (inst_load) ? MEM_valid_r : MEM_valid;
     //如果数据ram为异步读的，则MEM_valid即是MEM_over信号，
     //即load一拍完成
 //-----{MEM执行完成}end
@@ -163,6 +187,7 @@ module mem(                          // 访存级
 //-----{MEM->WB总线}begin
     wire [31:0] mem_result; //MEM传到WB的result为load结果或EXE结果
     assign mem_result = inst_load ? load_result : exe_result;
+    assign MEM_result = mem_result;
     
     assign MEM_WB_bus = {rf_wen,rf_wdest,                   // WB需要使用的信号
                          mem_result,                        // 最终要写回寄存器的数据

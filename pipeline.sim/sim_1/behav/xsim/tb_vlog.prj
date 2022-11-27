@@ -12,6 +12,7 @@ verilog xil_defaultlib  \
 "../../../../pipeline.srcs/sources_1/new/pipeline_cpu.v" \
 "../../../../pipeline.srcs/sources_1/new/regfile.v" \
 "../../../../pipeline.srcs/sources_1/new/wb.v" \
+"../../../../pipeline.srcs/sources_1/new/pipeline_cpu_display.v" \
 "../../../../pipeline.srcs/sim_1/new/tb.v" \
 
 # compile glbl module
